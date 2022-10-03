@@ -1,0 +1,25 @@
+{
+  "name": "shopping-list",
+  "version": "1.0.0",
+  "description": "Shopping List",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Meffodiiy/shopping-list.git"
+  },
+  "keywords": [
+    "javascript",
+    "typescript",
+    "react",
+    "nodejs"
+  ],
+  "author": "Meffodiiy <meffodiiy@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Meffodiiy/shopping-list/issues"
+  },
+  "homepage": "https://github.com/Meffodiiy/shopping-list#readme"
+}
