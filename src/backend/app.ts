@@ -3,6 +3,7 @@ import * as fs from 'fs'
 import express from 'express'
 import bodyParser from 'body-parser'
 import { ListRouter, ItemRouter } from './routes'
+import { testDBConnection } from './orm'
 
 
 const PORT = 2911
@@ -27,6 +28,10 @@ app.use('/list', ListRouter)
 app.use('/item', ItemRouter)
 
 
-app.listen(PORT, () => {
-  console.log(`App is listening on port ${PORT}`)
-})
+testDBConnection()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`App is listening on port ${PORT}`)
+    })
+  })
+  .catch(console.error)
