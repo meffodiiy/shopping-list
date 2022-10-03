@@ -6,6 +6,8 @@ export type TList = {
 	items: Array<TItem>
 }
 
+export type TListWithoutItems = Omit<TList, 'items'>
+
 export type TItem = {
 	id: string
 	index: number

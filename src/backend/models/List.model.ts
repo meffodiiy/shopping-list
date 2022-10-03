@@ -1,9 +1,10 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model } from 'sequelize'
 import db from '../orm'
 import Item from './Item.model'
+import { TListWithoutItems } from '../types'
 
 
-const List = db.define('List', {
+const List = db.define<Model<TListWithoutItems>>('List', {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,

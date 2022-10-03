@@ -1,8 +1,9 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model } from 'sequelize'
 import db from '../orm'
+import { TItem } from '../types'
 
 
-const Item = db.define('Item', {
+const Item = db.define<Model<TItem & { listId: string }>>('Item', {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
