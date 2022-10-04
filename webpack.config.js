@@ -20,6 +20,12 @@ module.exports = {
         use: {
           loader: 'ts-loader'
         }
+      },
+      {
+        test: /\.(ttf|jpg|png|svg|bmp)$/,
+        use: [
+          'file-loader'
+        ]
       }
     ]
   },

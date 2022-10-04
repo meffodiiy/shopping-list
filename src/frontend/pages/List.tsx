@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { TListPageProps } from './types'
 import { TItem } from '../../backend/types'
+import { Page, Text, List, ListItem, AddButton } from '../components'
 
 
-const List: React.FC<TListPageProps> = ({
+const ListPage: React.FC<TListPageProps> = ({
   edit
 }) => {
   const { id: listId } = useParams()
@@ -26,7 +27,7 @@ const List: React.FC<TListPageProps> = ({
   const addItem = () => {
     const newItem = {
       index: items.length,
-      text
+      text: ''
     }
     fetch(`/item/${listId}`, {
       method: 'POST',
@@ -40,66 +41,68 @@ const List: React.FC<TListPageProps> = ({
       .catch(({ error }) => console.error(error))
   }
 
-  const changeTitle = () => {
+  const changeTitle = (newTitle: string) => {
     fetch(`/list/${listId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        title
+        title: newTitle
       })
     })
       .catch(({ error }) => console.error(error))
   }
 
+  const updateItem = (id: string) => (params: { text?: string, index?: number }) => {
+    fetch(`/item/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    })
+      .catch(({ error }) => console.error(error))
+  }
+
+  const updateItemText = (id: string) => (text: string) => updateItem(id)({ text })
+  const updateItemIndex = (id: string) => (index: number) => updateItem(id)({ index })
+
+  const removeItem = (id: string) => () => {
+    fetch(`/item/${id}`, {
+      method: 'DELETE'
+    })
+      .then(() => setItems(prevItems => prevItems.filter(({ id: prevId }) => prevId !== id )))
+      .catch(({ error }) => console.error(error))
+  }
+
   return (
-    <>
-      <h1>{title || 'No Title'}</h1>
-      { edit ? (
-        <>
-          <h3>Change Title</h3>
-          <input
-            type="text"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-          />
-          <button
-            onClick={changeTitle}
-            disabled={!title}
+    <Page>
+      <Text
+        size={2} bold
+        editable={edit}
+        onChange={changeTitle}
+      >
+        {title}
+      </Text>
+      <List
+        items={items.sort(({ index: idx1 }, { index: idx2 }) => idx1 < idx2 ? -1 : 1)}
+        render={({ id, text }) => (
+          <ListItem
+            key={id}
+            editable={edit} onEditText={updateItemText(id)}
+            remove={edit} onRemoveClick={removeItem(id)}
+            dragAndDrop={edit}
+            placeholder="New item..."
           >
-            Change
-          </button>
-        </>
-      ) : (
-        <>
-          <h3>Add Item</h3>
-          <input
-            type="text"
-            value={text}
-            onChange={e => setText(e.target.value)}
-          />
-          <button
-            onClick={addItem}
-            disabled={!text}
-          >
-            Add
-          </button>
-        </>
-      ) }
-      <h3>Items</h3>
-      <ol>
-        { items
-          .sort(({ index: idx1 }, { index: idx2 }) => idx1 < idx2 ? -1 : 1)
-          .map(({ id, text }) => (
-            <li key={id}>
-              { text }
-            </li>
-          )) }
-      </ol>
-    </>
+            { text }
+          </ListItem>
+        )}
+      />
+      { edit && <AddButton onClick={addItem}>Add Item</AddButton> }
+    </Page>
   )
 }
 
 
-export default List
+export default ListPage

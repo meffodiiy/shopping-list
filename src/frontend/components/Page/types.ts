@@ -1,0 +1,3 @@
+/* Page */
+
+export type TPageProps = {}

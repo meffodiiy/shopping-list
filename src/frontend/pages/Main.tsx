@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { AddButton, List, ListItem, Page, Text } from '../components'
+import { TList } from '../../backend/types'
 
 
 const Main: React.FC = () => {
-  const [lists, setLists] = useState([])
+  const [lists, setLists] = useState<Array<TList>>([])
 
   const loadLists = () => {
     fetch('/list')
@@ -15,6 +17,29 @@ const Main: React.FC = () => {
     loadLists()
   }, [])
 
+  const openList = (id: string) => () => {
+    window.open(`/${id}`, '_self')
+  }
+
+  const openListForEdit = (id: string) => () => {
+    window.open(`/${id}/edit`, '_self')
+  }
+
+  const createAndOpenList = () => {
+    fetch('/list', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: 'New List'
+      })
+    })
+      .then(response => response.json())
+      .then(({ id }) => openListForEdit(id)())
+      .catch(({ error }) => console.error(error))
+  }
+
   const removeList = (id: string) => () => {
     fetch(`/list/${id}`, {
       method: 'DELETE'
@@ -24,18 +49,23 @@ const Main: React.FC = () => {
   }
 
   return (
-    <>
-      <h1>My lists</h1>
-      <a href="/new">NEW</a>
-      <h3>Lists</h3>
-      { lists.map(({ id, title }) => (
-        <div key={id}>
-          <a href={`/${id}`}>{title}</a>
-          <a href={`/${id}/edit`}>Edit</a>
-          <button onClick={removeList(id)}>Remove</button>
-        </div>
-      )) }
-    </>
+    <Page>
+      <Text size={2} bold editable>My lists</Text>
+      <List
+        items={lists}
+        render={({ id, title }) => (
+          <ListItem
+            key={id}
+            onClick={openList(id)}
+            edit onEditClick={openListForEdit(id)}
+            remove onRemoveClick={removeList(id)}
+          >
+            { title }
+          </ListItem>
+        )}
+      />
+      <AddButton onClick={createAndOpenList}>Add list</AddButton>
+    </Page>
   )
 }
 

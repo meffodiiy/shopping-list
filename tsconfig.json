@@ -101,9 +101,10 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "src"
+    "src",
+    "src/misc/img.d.ts"
   ],
   "exclude": [
-    "src/frontend"
+//    "src/frontend"
   ]
 }
