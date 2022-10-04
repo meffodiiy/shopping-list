@@ -28,6 +28,7 @@
   "homepage": "https://github.com/Meffodiiy/shopping-list#readme",
   "dependencies": {
     "body-parser": "^1.20.0",
+    "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

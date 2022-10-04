@@ -1,7 +1,11 @@
 import { Sequelize } from 'sequelize'
 
 
-const db = new Sequelize('postgresql://postgres:trotil959523@localhost:5432/shoppinglist', {
+require('dotenv').config({ path: './.env' })
+const { PASSWORD } = process.env
+
+
+const db = new Sequelize(`postgresql://postgres:${PASSWORD}@localhost:5432/shoppinglist`, {
   logging: false
 })
 export default db
