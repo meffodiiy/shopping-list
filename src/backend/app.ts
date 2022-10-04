@@ -4,6 +4,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import { ListRouter, ItemRouter } from './routes'
 import { testDBConnection } from './orm'
+import { errorMiddleware } from './middlewares'
 
 
 const PORT = 2911
@@ -23,6 +24,8 @@ app.get('/', (req, res) => {
     return res.sendStatus(404)
   res.sendFile(indexHTML)
 })
+
+app.use(errorMiddleware)
 
 app.use('/list', ListRouter)
 app.use('/item', ItemRouter)
