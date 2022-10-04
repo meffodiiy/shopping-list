@@ -12,7 +12,8 @@ const List = db.define<Model<TListWithoutItems>>('List', {
   },
   title: {
     type: DataTypes.TEXT,
-    allowNull: false
+    allowNull: false,
+    unique: true
   }
 }, {
   tableName: 'lists',
