@@ -26,7 +26,19 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './public/index.html',
-      inject: 'body'
+      inject: 'body',
+      publicPath: '/'
     })
-  ]
+  ],
+  devServer: {
+    historyApiFallback: true,
+    proxy: {
+      '/list': {
+        target: 'http://localhost:2911'
+      },
+      '/item': {
+        target: 'http://localhost:2911'
+      }
+    }
+  }
 }
