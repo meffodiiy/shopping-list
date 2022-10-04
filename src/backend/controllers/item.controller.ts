@@ -16,7 +16,7 @@ export const createItem = async (req: Request<{ listId: string }, never, TItemWi
       ...req.params,
       ...req.body
     })
-    return res.sendStatus(200)
+    return res.status(200).json({ id })
   } catch (error) {
     next(new HTTPError(500, error))
   }
