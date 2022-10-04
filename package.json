@@ -6,7 +6,9 @@
     "be/build": "tsc",
     "be/start": "npm run be/build && node dist/backend/app.js",
     "fe/build": "webpack",
-    "fe/start": "webpack serve --hot"
+    "fe/start": "webpack serve --hot",
+    "build": "npm run be/build && npm run fe/build",
+    "start": "npm run build && node dist/backend/app.js"
   },
   "repository": {
     "type": "git",

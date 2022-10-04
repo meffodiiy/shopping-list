@@ -103,8 +103,5 @@
   "include": [
     "src",
     "src/misc/img.d.ts"
-  ],
-  "exclude": [
-//    "src/frontend"
   ]
 }
