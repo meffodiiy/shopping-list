@@ -35,11 +35,8 @@ export const createList = async (req: Request<never, never, TListTitle>, res: Re
 
 export const getList = async (req: Request<TListId>, res: Response<TList>, next: NextFunction) => {
   try {
-    const { id } = req.params
     const list = await List.findOne({
-      where: {
-        id
-      },
+      where: req.params,
       include
     })
     if (!list)
@@ -63,7 +60,6 @@ export const getAllLists = async (req: Request, res: Response<Array<TList>>, nex
 
 export const updateList = async (req: Request<TListId, never, TListTitle>, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params
     const { title } = req.body
     const listCount = await List.count({
       where: {
@@ -73,9 +69,7 @@ export const updateList = async (req: Request<TListId, never, TListTitle>, res: 
     if (listCount > 0)
       return next(new HTTPError(409, 'List with given title already exists.'))
     await List.update(req.body, {
-      where: {
-        id
-      }
+      where: req.params
     })
     res.sendStatus(200)
   } catch (error) {
@@ -85,11 +79,8 @@ export const updateList = async (req: Request<TListId, never, TListTitle>, res: 
 
 export const deleteList = async (req: Request<TListId>, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params
     await List.destroy({
-      where: {
-        id
-      }
+      where: req.params
     })
     res.sendStatus(200)
   } catch (error) {
